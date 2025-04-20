@@ -1,0 +1,32 @@
+.nav {
+  display: flex;
+  flex: 1;
+  gap: 30px;
+  margin-left: 40px;
+}
+
+.nav__link {
+  text-decoration: none;
+  color: #c8c8c8;
+}
+
+.nav__link--active {
+  color: white;
+}
+
+@media all and (max-width: 576px) {
+  .nav {
+    margin-left: 0;
+    gap: 20px;
+  }
+
+  .nav__link {
+    width: 60px;
+    height: 37px;
+    border: 1px solid white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
