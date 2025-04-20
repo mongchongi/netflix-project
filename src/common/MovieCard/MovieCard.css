@@ -1,0 +1,103 @@
+.card {
+  width: 100%;
+  height: 200px;
+  background-position: center;
+  background-size: cover;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+  padding: 0 5px;
+}
+
+.card:hover {
+  transform: scale(1.3) translateZ(20px);
+  z-index: 1010;
+}
+
+.card__image {
+  width: 100%;
+  height: 200px;
+  display: block;
+  object-fit: fill;
+  border-radius: 5px;
+}
+
+.card__info {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  width: calc(100% - 10px);
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  overflow-wrap: break-word;
+  opacity: 0;
+  transition: all 1s;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: end;
+  font-size: 14px;
+}
+
+.card__info:hover {
+  opacity: 1;
+}
+
+.card__badges {
+  display: flex;
+  gap: 10px;
+  margin-bottom: auto;
+}
+
+.card__badge {
+  padding: 7px 8px 4px;
+  border-radius: 5px;
+}
+
+.card__badge--average {
+  background: rgba(255, 255, 255, 0.8);
+  color: black;
+}
+
+.card__badge--adult {
+  background: rgba(215, 60, 52, 0.8);
+}
+
+.card__title {
+  margin: 0 0 10px;
+}
+
+.card__genre-list {
+  display: flex;
+  gap: 10px;
+}
+
+.card__detail-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  background: rgba(91, 101, 96, 0.8);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.card__detail-link:hover {
+  background: rgba(91, 101, 96, 0.5);
+}
+
+@media all and (max-width: 576px) {
+  .card__badges {
+    flex-direction: column;
+    align-items: start;
+  }
+}

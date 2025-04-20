@@ -1,0 +1,19 @@
+.carousel {
+  margin-top: 40px;
+}
+
+.carousel__title {
+  color: white;
+  padding: 0px 40px;
+  margin-bottom: 0px;
+}
+
+.carousel-container {
+  height: 300px;
+}
+
+@media all and (max-width: 576px) {
+  .carousel__title {
+    padding: 0px 20px;
+  }
+}

@@ -1,4 +1,4 @@
-import { usePopularMoviesQuery } from '../../../../hooks/usePopularMovies';
+import { useFetchMoviesQuery } from '../../../../hooks/useFetchMovies';
 import { useIsMobile } from '../../../../hooks/useIsMobile';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import './Banner.css';
@@ -7,7 +7,7 @@ import Loading from '../../../../common/Loading/Loading';
 import Error from '../../../../common/Error/Error';
 
 const Banner = () => {
-  const { isLoading, error, data } = usePopularMoviesQuery();
+  const { isLoading, error, data } = useFetchMoviesQuery('popular');
 
   const isMobile = useIsMobile();
 
