@@ -1,8 +1,24 @@
 import { Link } from 'react-router';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import './MovieCard.css';
+import { useFetchMovieGenreQuery } from '../../hooks/useFetchMovieGenre';
 
 const MovieCard = ({ movie }) => {
+  const { data: genreData } = useFetchMovieGenreQuery();
+
+  const showGenre = (genreIdList) => {
+    if (!genreData) {
+      return [];
+    }
+
+    const genreNameList = genreIdList.map((id) => {
+      const genreObj = genreData.find((genre) => genre.id === id);
+      return genreObj.name;
+    });
+
+    return genreNameList;
+  };
+
   return (
     <div className='card'>
       <img
@@ -13,11 +29,15 @@ const MovieCard = ({ movie }) => {
       <div className='card__info'>
         <div className='card__badges'>
           <div className='card__badge card__badge--average'>평점 : {movie.vote_average}</div>
-          {movie.adult && <div className='card__badge card__badge--adult'>+18</div>}
+          {movie.adult ? (
+            <div className='card__badge card__badge--adult'>+18</div>
+          ) : (
+            <div className='card__badge card__badge--all'>ALL</div>
+          )}
         </div>
         <h4 className='card__title'>{movie.title}</h4>
         <div className='card__genre-list'>
-          {movie.genre_ids.map((genre, index) => (
+          {showGenre(movie.genre_ids).map((genre, index) => (
             <div key={index}>{genre}</div>
           ))}
         </div>
