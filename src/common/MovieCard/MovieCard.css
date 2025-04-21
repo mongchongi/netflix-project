@@ -67,6 +67,10 @@
   background: rgba(215, 60, 52, 0.8);
 }
 
+.card__badge--all {
+  background: rgba(68, 143, 83, 0.8);
+}
+
 .card__title {
   margin: 0 0 10px;
 }
