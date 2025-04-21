@@ -33,7 +33,7 @@
   color: white;
   font-weight: bold;
   overflow-wrap: break-word;
-  /* opacity: 0; */
+  opacity: 0;
   transition: all 1s;
   padding: 10px;
   display: flex;
