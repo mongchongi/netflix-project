@@ -33,14 +33,14 @@
   color: white;
   font-weight: bold;
   overflow-wrap: break-word;
-  opacity: 0;
+  /* opacity: 0; */
   transition: all 1s;
   padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: end;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .card__info:hover {
@@ -76,8 +76,16 @@
 }
 
 .card__genre-list {
+  width: 100%;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+}
+
+.card__genre-item {
+  padding: 3px 5px;
+  border: 1px solid white;
+  border-radius: 5px;
 }
 
 .card__detail-link {
@@ -97,11 +105,4 @@
 
 .card__detail-link:hover {
   background: rgba(91, 101, 96, 0.5);
-}
-
-@media all and (max-width: 576px) {
-  .card__badges {
-    flex-direction: column;
-    align-items: start;
-  }
 }

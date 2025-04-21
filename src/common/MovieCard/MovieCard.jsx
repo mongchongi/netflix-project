@@ -38,7 +38,9 @@ const MovieCard = ({ movie }) => {
         <h4 className='card__title'>{movie.title}</h4>
         <div className='card__genre-list'>
           {showGenre(movie.genre_ids).map((genre, index) => (
-            <div key={index}>{genre}</div>
+            <div key={index} className='card__genre-item'>
+              {genre}
+            </div>
           ))}
         </div>
         <Link to={`/movies/${movie.id}`} className='card__detail-link'>
