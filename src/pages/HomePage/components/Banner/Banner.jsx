@@ -33,7 +33,7 @@ const Banner = () => {
         <h1 className='banner__title'>{data?.results[randomIndex].title}</h1>
         {!isMobile && <p className='banner__overview'>{data?.results[randomIndex].overview}</p>}
         <div className='banner__controls'>
-          <div className='banner__average'>평점 : {data?.results[randomIndex].vote_average}</div>
+          <div className='banner__average'>평점 : {data?.results[randomIndex].vote_average.toFixed(1)}</div>
           <Link to={`/movies/${data?.results[randomIndex].id}`} className='banner__detail-link'>
             <ErrorOutlineIcon sx={{ fontSize: '30px' }} />
             <div style={{ marginTop: '1px' }}>상세 정보</div>

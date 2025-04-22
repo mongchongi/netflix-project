@@ -20,15 +20,13 @@ const MovieCard = ({ movie }) => {
   };
 
   return (
-    <div className='card'>
-      <img
-        src={`https://media.themoviedb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`}
-        alt={movie.title}
-        className='card__image'
-      />
+    <div
+      className='card'
+      style={{ backgroundImage: `url(https://media.themoviedb.org/t/p/w600_and_h900_bestv2${movie.poster_path})` }}
+    >
       <div className='card__info'>
         <div className='card__badges'>
-          <div className='card__badge card__badge--average'>평점 : {movie.vote_average}</div>
+          <div className='card__badge card__badge--average'>평점 : {movie.vote_average.toFixed(1)}</div>
           {movie.adult ? (
             <div className='card__badge card__badge--adult'>+18</div>
           ) : (
