@@ -161,18 +161,19 @@
 @media all and (max-width: 576px) {
   .movie-list-container {
     padding: 0 20px;
+    display: block;
   }
 
   .filter {
-    width: 40%;
+    width: 100%;
   }
 
   .list {
-    width: 60%;
+    width: 100%;
   }
 
   .movie {
-    width: 100%;
+    width: calc((100% - 10px) / 2);
     height: 300px;
   }
 

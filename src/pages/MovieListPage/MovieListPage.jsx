@@ -59,7 +59,7 @@ const MovieListPage = () => {
 
   return (
     <div className='movie-list-container' style={{ color: 'white', marginTop: height }}>
-      <div className='filter'></div>
+      <div className='filter'>필터링 UI 부분</div>
       <div className='list'>
         {data?.results.length === 0 ? (
           <Error message='검색 결과가 없습니다.' />
@@ -105,11 +105,11 @@ const MovieListPage = () => {
               previousLabel={<PlayArrowIcon />}
               onPageChange={handlePageClick}
               pageRangeDisplayed={5}
-              pageCount={data?.total_pages}
+              pageCount={(Math.min(data?.total_pages), 500)}
               renderOnZeroPageCount={null}
               forcePage={page - 1}
               containerClassName='pagination'
-              pageRangeDisplayed={isMobile ? 2 : 10}
+              pageRangeDisplayed={isMobile ? 3 : 10}
               marginPagesDisplayed={1}
             />
           </>
