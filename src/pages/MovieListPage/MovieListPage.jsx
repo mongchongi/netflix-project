@@ -105,7 +105,7 @@ const MovieListPage = () => {
               previousLabel={<PlayArrowIcon />}
               onPageChange={handlePageClick}
               pageRangeDisplayed={5}
-              pageCount={(Math.min(data?.total_pages), 500)}
+              pageCount={data?.total_pages > 500 ? (Math.min(data?.total_pages), 500) : data?.total_pages}
               renderOnZeroPageCount={null}
               forcePage={page - 1}
               containerClassName='pagination'
