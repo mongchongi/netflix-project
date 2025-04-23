@@ -43,23 +43,25 @@ const MovieListPage = () => {
 
   const handlePageClick = ({ selected }) => {
     setPage(selected + 1);
+    window.scrollTo(0, 0);
   };
 
   useEffect(() => {
     resetPage();
-  }, []);
+    window.scrollTo(0, 0);
+  }, [query]);
 
   if (isLoading) {
     return <Loading />;
   }
 
   if (error) {
-    return <Error message='정보를 가져오는 중 오류가 발생했습니다.' />;
+    return <Error />;
   }
 
   return (
     <div className='movie-list-container' style={{ color: 'white', marginTop: height }}>
-      <div className='filter'>필터링 UI 부분</div>
+      <div className='select'>select</div>
       <div className='list'>
         {data?.results.length === 0 ? (
           <Error message='검색 결과가 없습니다.' />
@@ -91,7 +93,7 @@ const MovieListPage = () => {
                         </div>
                       ))}
                     </div>
-                    <Link to={`/movie/${movie.id}`} className='movie__detail-link'>
+                    <Link to={`/movies/${movie.id}`} className='movie__detail-link'>
                       <ErrorOutlineIcon />
                       <div style={{ marginTop: '2px' }}>상세 정보</div>
                     </Link>

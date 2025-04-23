@@ -1,0 +1,59 @@
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info__genre-list {
+  display: flex;
+  gap: 10px;
+}
+
+.info__genre-item {
+  padding: 5px;
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+.info__title {
+  margin: 0 0 5px;
+}
+
+.info__badges {
+  display: flex;
+  gap: 10px;
+}
+
+.info__badge {
+  padding: 5px;
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+.info__badge--adult {
+  border: 1px solid rgba(215, 60, 52, 0.8);
+  background: rgba(215, 60, 52, 0.8);
+}
+
+.info__badge--all {
+  border: 1px solid rgba(68, 143, 83, 0.8);
+  background: rgba(68, 143, 83, 0.8);
+}
+
+.info__overview {
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  padding: 20px 0;
+}
+
+.d-flex {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.info__label {
+  padding: 5px;
+  border: 1px solid white;
+  border-radius: 5px;
+}

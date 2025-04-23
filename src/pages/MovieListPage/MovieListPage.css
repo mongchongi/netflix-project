@@ -4,7 +4,7 @@
   padding: 0 40px;
 }
 
-.filter {
+.select {
   width: 25%;
 }
 
@@ -164,7 +164,7 @@
     display: block;
   }
 
-  .filter {
+  .select {
     width: 100%;
   }
 

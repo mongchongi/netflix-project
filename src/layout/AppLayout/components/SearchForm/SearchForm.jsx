@@ -25,7 +25,7 @@ const SearchForm = () => {
       </button>
       <input
         type='text'
-        placeholder='제목, 장르'
+        placeholder='제목'
         className='search__input'
         value={keyword}
         onChange={(event) => setKeyword(event.target.value)}
