@@ -1,11 +1,52 @@
 .movie-list-container {
   display: flex;
-  gap: 10px;
+  gap: 40px;
   padding: 0 40px;
 }
 
-.select {
+.filter {
   width: 25%;
+}
+
+.select {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.select__current-option {
+  width: 100%;
+  height: 35px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.select__options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: white;
+  border-radius: 0 0 5px 5px;
+  position: absolute;
+  width: 100%;
+  top: 35px;
+}
+
+.select__option {
+  padding: 10px;
+  color: black;
+  cursor: pointer;
+}
+
+.select__option:hover {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .list {
@@ -161,10 +202,12 @@
 @media all and (max-width: 576px) {
   .movie-list-container {
     padding: 0 20px;
-    display: block;
+    flex-direction: column;
+    gap: 20px;
   }
 
-  .select {
+  .filter {
+    display: flex;
     width: 100%;
   }
 

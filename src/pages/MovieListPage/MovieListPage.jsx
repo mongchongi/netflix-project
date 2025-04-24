@@ -8,23 +8,32 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { useFetchMovieGenreQuery } from '../../hooks/useFetchMovieGenre';
 import ReactPaginate from 'react-paginate';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useIsMobile } from '../../hooks/useIsMobile';
-import usePageStore from '../../stores/usePageStore';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useFilterByMovieGenreQuery } from '../../hooks/useFilterByMovieGenre';
 
 const MovieListPage = () => {
+  const [page, setPage] = useState(1);
+  const [selectedGenre, setSelectedGenre] = useState({ id: null, name: '전체' });
+  const [showGenreSelect, setShowGenreSelect] = useState(false);
+
+  const genreSelectRef = useRef(null);
+
   const [query, setQuery] = useSearchParams();
   const keyword = query.get('q');
-
-  const page = usePageStore((state) => state.page);
-  const setPage = usePageStore((state) => state.setPage);
-  const resetPage = usePageStore((state) => state.resetPage);
 
   const height = useOffsetHeightStore((state) => state.height);
 
   const isMobile = useIsMobile();
 
   const { isLoading, error, data } = useSearchMovieQuery(keyword, page);
+
+  const {
+    isLoading: filterGenreIsLoading,
+    error: filterGenreError,
+    data: filterGenre,
+  } = useFilterByMovieGenreQuery(selectedGenre.id, page);
 
   const { data: genreData } = useFetchMovieGenreQuery();
 
@@ -47,21 +56,73 @@ const MovieListPage = () => {
   };
 
   useEffect(() => {
-    resetPage();
-    window.scrollTo(0, 0);
-  }, [query]);
+    function handleClickOutside(event) {
+      if (genreSelectRef.current && !genreSelectRef.current.contains(event.target)) {
+        setShowGenreSelect(false);
+      }
+    }
 
-  if (isLoading) {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [genreSelectRef]);
+
+  useEffect(() => {
+    setPage(1);
+    window.scrollTo(0, 0);
+  }, [query, selectedGenre]);
+
+  if (isLoading || filterGenreIsLoading) {
     return <Loading />;
   }
 
-  if (error) {
+  if (error || filterGenreError) {
     return <Error />;
   }
 
   return (
     <div className='movie-list-container' style={{ color: 'white', marginTop: height }}>
-      <div className='select'>select</div>
+      <div className='filter'>
+        {/* 작업 중... */}
+        <div className='select' ref={genreSelectRef}>
+          <button
+            className='select__current-option'
+            style={{ borderRadius: `${showGenreSelect ? '5px 5px 0 0' : '5px'}` }}
+            onClick={() => setShowGenreSelect((prev) => !prev)}
+          >
+            <div>{selectedGenre.name}</div>
+            <ArrowDropDownIcon
+              sx={{ transform: `${showGenreSelect ? 'rotate(180deg)' : 'rotate(0)'}`, transition: 'all 0.3s' }}
+            />
+          </button>
+          {showGenreSelect && (
+            <ul className='select__options'>
+              <li
+                className='select__option'
+                onClick={() => {
+                  setSelectedGenre({ id: null, name: '전체' });
+                  setShowGenreSelect(false);
+                }}
+              >
+                전체
+              </li>
+              {genreData.map((genre) => (
+                <li
+                  key={genre.id}
+                  className='select__option'
+                  onClick={() => {
+                    setSelectedGenre(genre);
+                    setShowGenreSelect(false);
+                  }}
+                >
+                  {genre.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
       <div className='list'>
         {data?.results.length === 0 ? (
           <Error message='검색 결과가 없습니다.' />

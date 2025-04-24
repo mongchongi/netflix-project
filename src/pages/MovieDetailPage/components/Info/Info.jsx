@@ -1,8 +1,11 @@
 import { useFetchMovieGenreQuery } from '../../../../hooks/useFetchMovieGenre';
+import { useIsMobile } from '../../../../hooks/useIsMobile';
 import './Info.css';
 
 const Info = ({ movie }) => {
   const { data: genreData } = useFetchMovieGenreQuery();
+
+  const isMobile = useIsMobile();
 
   const showGenre = (genreIdList) => {
     if (!genreData) {
@@ -18,7 +21,7 @@ const Info = ({ movie }) => {
   };
 
   return (
-    <div className='info' style={{ color: 'white' }}>
+    <div className='info' style={{ color: 'white', overflowY: `${isMobile ? 'unset' : 'auto'}` }}>
       <div className='info__genre-list'>
         {showGenre(movie?.genres).map((genre, index) => (
           <div key={index} className='info__genre-item'>
