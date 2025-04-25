@@ -1,6 +1,7 @@
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useEffect, useRef, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { Link, useSearchParams } from 'react-router';
@@ -8,16 +9,16 @@ import Error from '../../common/Error/Error';
 import Loading from '../../common/Loading/Loading';
 import { useFetchMovieGenreQuery } from '../../hooks/useFetchMovieGenre';
 import { useIsMobile } from '../../hooks/useIsMobile';
-import { useSearchMovieQuery } from '../../hooks/useSearchMovie';
 import useOffsetHeightStore from '../../stores/useOffsetHeightStore';
 import './MovieListPage.css';
+import { useFilterAndSortMoviesQuery } from '../../hooks/useFilterAndSortMovies';
+import noImage from '../../assets/no-image.jpg';
 
 const MovieListPage = () => {
   const [page, setPage] = useState(1);
   const [selectedGenre, setSelectedGenre] = useState({ id: undefined, name: '전체' });
-  console.log('🚀 ~ MovieListPage ~ selectedGenre:', selectedGenre);
   const [showGenreSelect, setShowGenreSelect] = useState(false);
-  const [selectedPopularity, setSelectedPopularity] = useState('기본');
+  const [selectedPopularity, setSelectedPopularity] = useState({ name: '기본순', value: '' });
   const [showSortSelect, setShowSortSelect] = useState(false);
 
   const genreSelectRef = useRef(null);
@@ -30,7 +31,12 @@ const MovieListPage = () => {
 
   const isMobile = useIsMobile();
 
-  const { isLoading, error, data } = useSearchMovieQuery(keyword, page);
+  const { isLoading, error, data } = useFilterAndSortMoviesQuery(
+    selectedPopularity.value,
+    selectedGenre.id,
+    keyword,
+    page
+  );
 
   const { data: genreData } = useFetchMovieGenreQuery();
 
@@ -70,21 +76,9 @@ const MovieListPage = () => {
   useEffect(() => {
     setPage(1);
     setSelectedGenre({ id: undefined, name: '전체' });
-    setSelectedPopularity('기본');
+    setSelectedPopularity({ name: '기본순', value: '' });
     window.scrollTo(0, 0);
   }, [query]);
-
-  const filteredByGenre = data?.results
-    ? selectedGenre.id
-      ? data?.results.filter((movie) => movie.genre_ids.includes(Number(selectedGenre.id)))
-      : data?.results
-    : [];
-
-  const sortedMovies = [...filteredByGenre].sort((a, b) => {
-    if (selectedPopularity === '인기 높은순') return b.popularity - a.popularity;
-    if (selectedPopularity === '인기 낮은순') return a.popularity - b.popularity;
-    return 0;
-  });
 
   if (isLoading) {
     return <Loading />;
@@ -93,8 +87,6 @@ const MovieListPage = () => {
   if (error) {
     return <Error />;
   }
-
-  console.log(sortedMovies);
 
   return (
     <div className='movie-list-container' style={{ color: 'white', marginTop: height }}>
@@ -105,7 +97,7 @@ const MovieListPage = () => {
             style={{ borderRadius: `${showSortSelect ? '5px 5px 0 0' : '5px'}` }}
             onClick={() => setShowSortSelect((prev) => !prev)}
           >
-            <div>{selectedPopularity}</div>
+            <div>{selectedPopularity.name}</div>
             <ArrowDropDownIcon
               sx={{ transform: `${showSortSelect ? 'rotate(180deg)' : 'rotate(0)'}`, transition: 'all 0.3s' }}
             />
@@ -115,14 +107,20 @@ const MovieListPage = () => {
               className='select__options'
               onClick={(event) => {
                 if (event.target.tagName === 'LI') {
-                  setSelectedPopularity(event.target.innerHTML);
+                  setSelectedPopularity({ name: event.target.innerHTML, value: event.target.dataset.sort });
                   setShowSortSelect(false);
                 }
               }}
             >
-              <li className='select__option'>기본</li>
-              <li className='select__option'>인기 낮은순</li>
-              <li className='select__option'>인기 높은순</li>
+              <li className='select__option' data-sort=''>
+                기본순
+              </li>
+              <li className='select__option' data-sort='popularity.asc'>
+                인기 낮은순
+              </li>
+              <li className='select__option' data-sort='popularity.desc'>
+                인기 높은순
+              </li>
             </ul>
           )}
         </div>
@@ -158,16 +156,20 @@ const MovieListPage = () => {
         </div>
       </div>
       <div className='list'>
-        {sortedMovies.length === 0 ? (
+        {data?.results.length === 0 ? (
           <div>검색 결과가 없습니다.</div>
         ) : (
           <div className='movie-list'>
-            {sortedMovies.map((movie) => (
+            {data?.results.map((movie) => (
               <div
                 key={movie.id}
                 className='movie'
                 style={{
-                  backgroundImage: `url(https://media.themoviedb.org/t/p/w600_and_h900_bestv2${movie.poster_path})`,
+                  backgroundImage: `${
+                    movie.poster_path
+                      ? `url(https://media.themoviedb.org/t/p/w600_and_h900_bestv2${movie.poster_path})`
+                      : `url(${noImage})`
+                  }`,
                 }}
               >
                 <div className='movie__info'>
@@ -198,8 +200,8 @@ const MovieListPage = () => {
         )}
         <ReactPaginate
           breakLabel='...'
-          nextLabel={<PlayArrowIcon />}
-          previousLabel={<PlayArrowIcon />}
+          previousLabel={<ArrowLeftIcon sx={{ fontSize: '40px' }} />}
+          nextLabel={<ArrowRightIcon sx={{ fontSize: '40px' }} />}
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
           pageCount={data?.total_pages > 500 ? (Math.min(data?.total_pages), 500) : data?.total_pages}

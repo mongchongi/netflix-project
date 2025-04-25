@@ -15,6 +15,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import CloseIcon from '@mui/icons-material/Close';
 import YouTube from 'react-youtube';
 import { useIsMobile } from '../../hooks/useIsMobile';
+import noImage from '../../assets/no-image.jpg';
 
 const MovieDetailPage = () => {
   const [tab, setTab] = useState(0);
@@ -60,22 +61,26 @@ const MovieDetailPage = () => {
           <button className='video-modal__close-button' onClick={() => setShowVideo(false)}>
             <CloseIcon sx={{ fontSize: '40px' }} />
           </button>
-          <YouTube
-            videoId={video?.results[randomIndex].key}
-            opts={{
-              width: '100%',
-              height: isMobile ? '350' : '700',
-              playerVars: {
-                autoplay: 1,
-                modestbranding: 1,
-                rel: 0,
-              },
-            }}
-            onEnd={(e) => {
-              e.target.stopVideo(0);
-            }}
-            style={{ width: '100%' }}
-          />
+          {video?.results.length === 0 ? (
+            <div style={{ color: 'white', margin: '0 auto' }}>영상이 없습니다.</div>
+          ) : (
+            <YouTube
+              videoId={video?.results[randomIndex].key}
+              opts={{
+                width: '100%',
+                height: isMobile ? '350' : '700',
+                playerVars: {
+                  autoplay: 1,
+                  modestbranding: 1,
+                  rel: 0,
+                },
+              }}
+              onEnd={(e) => {
+                e.target.stopVideo(0);
+              }}
+              style={{ width: '100%' }}
+            />
+          )}
         </div>
       )}
       <div className='detail' style={{ marginTop: `${height}px` }}>
@@ -85,7 +90,11 @@ const MovieDetailPage = () => {
             <div style={{ marginTop: '4px' }}>예고편 보기</div>
           </button>
           <img
-            src={`https://media.themoviedb.org/t/p/w600_and_h900_bestv2${detail?.poster_path}`}
+            src={
+              detail?.poster_path
+                ? `https://media.themoviedb.org/t/p/w600_and_h900_bestv2${detail?.poster_path}`
+                : noImage
+            }
             alt=''
             className='detail__image'
             style={{ height: `calc(100vh - ${height + 10}px` }}
